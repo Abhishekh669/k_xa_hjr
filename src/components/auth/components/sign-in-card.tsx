@@ -48,7 +48,7 @@ function SignInCard({ setState }: SignInCardProps) {
       }
     } catch (error : any) {
       console.log("this is the error : ",error.Error)
-      setError(error.Error)
+      setError(error.Error || "Something went wrong.")
     }
   }
 

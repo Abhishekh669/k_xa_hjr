@@ -1,3 +1,4 @@
+"use client"
 import SlideBar from "./SlideBar"
 import Toolbar from "./Toolbar"
 

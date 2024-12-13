@@ -3,6 +3,7 @@
 import { userDataType } from "@/app/(slack)/slack/workspace/[workspaceId]/page";
 import { auth } from "@/auth";
 import { connectDB } from "@/lib/connectDB"
+import { Member } from "@/model/members.model";
 import { WorkSpace } from "@/model/workspace.model";
 import { WorkSpaceType } from "@/types/workspace";
 
@@ -35,6 +36,14 @@ export const createWorkSpace = async(data : WorkSpaceType) =>{
     if(!savedWorkSpace){
         throw new Error("Failed to create the workspaces")
     }
+    const newMember = await  new Member({
+        userId : data.userId,
+        workspaceId  : savedWorkSpace._id,
+        role : "admin"
+    })
+
+    await newMember.save();
+    
     return {
         message : "Successfully created workspaces",
         workspace : JSON.stringify(savedWorkSpace)

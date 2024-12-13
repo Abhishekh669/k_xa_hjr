@@ -8,7 +8,7 @@ export const useCreateUser = () => {
     mutationFn: createUser,
     
     onSuccess: () => {
-      toast.success("Student created successfully")
+      toast.success("Email sent successfully")
       queryClient.invalidateQueries({ queryKey: ['createUser'] })
     },
     onError: () => { },

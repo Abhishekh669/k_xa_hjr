@@ -11,12 +11,11 @@ import {
 import { useCreateWorkspaceModal } from "../store/use-create-workspace-modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useSession } from "next-auth/react";
 import { useCreateWorkSpace } from "@/utils/hooks/mutateHooks/useCreateWorkSpace";
 import { useState } from "react";
 import { useGetAllWorkSpaces } from "@/utils/hooks/queryHooks/workspace/useGetAllWorkSpaces";
 import { TriangleAlert } from "lucide-react";
-import { useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import { WorkSpaceType } from "@/types/workspace";
 import { User } from "next-auth";
 
@@ -24,7 +23,6 @@ export const CreateWorkspaceModal = ({user} : {user : User}) => {
   const [open, setOpen] = useCreateWorkspaceModal();
   const [name, setName] = useState("");
   const [error, setError] = useState("")
-  const [createdWorkSpace, setCreatedWorkSpace] = useState<WorkSpaceType>()
   const router = useRouter();
 
 
@@ -38,15 +36,15 @@ export const CreateWorkspaceModal = ({user} : {user : User}) => {
       if (user) {
         const workSpaceDetails = {
           name: name,
-          userId: user._id as string,
+          userId: user._id as Object,
           joinCode: "123456",
         };
         server_create_workspace(workSpaceDetails as WorkSpaceType,{
           onSuccess : (response) =>{
-            setCreatedWorkSpace(JSON.parse(response.workspace))
+            const res : WorkSpaceType = JSON.parse(response.workspace)
             if(response.message){
-              router.push(`/slack/workspace/${createdWorkSpace?._id}`)
               handleClose();
+              router.push(`/slack/workspace/${res?._id}`)
             }
           }
         });

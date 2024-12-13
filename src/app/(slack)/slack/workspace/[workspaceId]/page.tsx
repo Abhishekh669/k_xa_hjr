@@ -3,8 +3,7 @@ import { useCreateWorkspaceModal } from '@/features/workspaces/store/use-create-
 import { useGetLoggedInUser } from '@/utils/hooks/queryHooks/user/useGetLogedInUser';
 import { useGetWorkspaceDetails } from '@/utils/hooks/queryHooks/workspace/useGetWorkspaces';
 import { useWorkSpaceId } from '@/utils/hooks/workSpaceHook/use-workspace-id';
-import { useSession } from 'next-auth/react';
-import { useParams } from 'next/navigation';
+import { redirect, } from 'next/navigation';
 import React, { useEffect } from 'react'
 
 export interface userDataType{
@@ -14,6 +13,7 @@ export interface userDataType{
 
 const WorkSpaceIdPage = () => {
   const workspaceId = useWorkSpaceId();
+  if(workspaceId == "undefined")  return redirect("/slack");
  const {data:user, isError : error , isLoading: loading} = useGetLoggedInUser();
   const [open, setOpen] = useCreateWorkspaceModal();
   const userData:userDataType = {
@@ -21,6 +21,7 @@ const WorkSpaceIdPage = () => {
     workspaceId 
   }
   const {data, isError, isLoading} = useGetWorkspaceDetails(userData);
+  console.log("this is the data : ",data)
   useEffect(() =>{
     if(!!data && !isError && !isLoading){
       setOpen(false);

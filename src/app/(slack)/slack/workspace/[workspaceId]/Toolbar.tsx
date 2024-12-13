@@ -1,4 +1,3 @@
-"use client"
 import { Button } from '@/components/ui/button'
 import { useGetLoggedInUser } from '@/utils/hooks/queryHooks/user/useGetLogedInUser'
 import { useGetAllWorkSpaces } from '@/utils/hooks/queryHooks/workspace/useGetAllWorkSpaces'
@@ -28,7 +27,7 @@ function Toolbar() {
             </Button>
         </div>
         <div className='ml-auto flex-1 flex items-center justify-end'>
-            <Button variant="ghost" size="iconSm" className='hover:bg-transparent'>
+            <Button variant="ghost"  className='hover:bg-transparent'>
                 <Info className='size-5 hover:text-white'  />
             </Button>
         </div>
