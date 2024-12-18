@@ -6,6 +6,7 @@ import React from 'react'
 import { userDataType } from './page'
 import { useWorkSpaceId } from '@/utils/hooks/workSpaceHook/use-workspace-id'
 import { useGetWorkspaceDetails } from '@/utils/hooks/queryHooks/workspace/useGetWorkspaces'
+import WorkSpace from '../page'
 
 function Toolbar() {
     const {data, isError, isLoading} = useGetLoggedInUser();
@@ -15,6 +16,7 @@ function Toolbar() {
         workspaceId
       }
       const {data: workspace, isError : workspaceError, isLoading: workspaceIsLoading} = useGetWorkspaceDetails(userData);
+
   return (
     <nav className='bg-[#481349] flex items-center justify-between h-10 p-1.5 '>
         <div className='flex-1' />

@@ -8,11 +8,9 @@ export const useCreateWorkSpace = () => {
     mutationFn: createWorkSpace,
     
     onSuccess: () => {
-      toast.success("Workspace created successfully")
       queryClient.invalidateQueries({ queryKey: ['getAllWorkSpaces'] })
     },
     onError: (error) => { 
-      toast.error(error.message)
     },
     onSettled: () => { },
     onMutate: () => { },

@@ -6,7 +6,7 @@ export  const fetchWorkspaceDetails = async(data : userDataType) =>{
     const response = await getWorkspaceDetails(data);
     return {
         message : response.message,
-        workspace : JSON.parse(response.workspace)
+        workspace : JSON.parse(response.workspace as string)
     };
 }
 

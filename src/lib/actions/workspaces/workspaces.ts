@@ -9,11 +9,25 @@ import { WorkSpaceType } from "@/types/workspace";
 
 connectDB();
 
+
+const generateCode = () =>{
+    const code = Array.from(
+        {length : 6},
+         () =>"0123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(Math.random() * 36)]
+    ).join("")
+
+    return code;
+}
+
 export const getWorkspaceDetails = async(data : userDataType) =>{
+
     const session = await auth();
     if(!session?.user) throw new Error("Unauthorized")
-    const getWorkSpace = await WorkSpace.findOne({userId : data.userId, _id : data.workspaceId})
-    if(!getWorkSpace) throw new Error("WorkSpace not found")
+    const getWorkSpace = await Member.findOne({userId : data.userId , workspaceId : data.workspaceId}).populate("workspaceId")
+console.log("workspace : ",getWorkSpace)
+    if(!getWorkSpace) return {
+        error : "WorkSpace not found"
+    };
     return {
         message : "WorkSpace found Successfully",
         workspace : JSON.stringify(getWorkSpace)
@@ -30,11 +44,13 @@ export const createWorkSpace = async(data : WorkSpaceType) =>{
                 { name : data.name},
               ],
     })
-    if(checkWorkSpace) throw new Error("WorkSpace already exists")
-    const newWorkSpace = await new WorkSpace(data);
+    if(checkWorkSpace) return {error : "WorkSpace Already Exists"}
+    const newData = {...data, joinCode: generateCode()}
+    console.log("this is the new data : ", newData)
+    const newWorkSpace = await new WorkSpace(newData);
     const savedWorkSpace = await newWorkSpace.save();
     if(!savedWorkSpace){
-        throw new Error("Failed to create the workspaces")
+        return {error : "Failed to created Workspace"}
     }
     const newMember = await  new Member({
         userId : data.userId,
@@ -56,16 +72,10 @@ export const createWorkSpace = async(data : WorkSpaceType) =>{
 export const getAllWorkSpaces = async(userId : string) =>{
     const session = await auth();
     if(!session?.user) throw new Error("Unauthorized");
-    try {
-        const workspaces = await WorkSpace.find({userId });
+        const members = await Member.find({ userId: userId }).populate('workspaceId');
+        const workspaces = members.map((member) =>(member.workspaceId))
     return {
         message : "Successfull fetched workspaces",
         workspaces : JSON.stringify(workspaces)
     }
-    } catch (error) {
-        throw new Error("Something went wrong.")
-        
-    }
-    
-    
 }
