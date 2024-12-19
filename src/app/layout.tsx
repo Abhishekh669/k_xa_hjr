@@ -4,6 +4,7 @@ import "./globals.css";
 import QueryProvider from "@/utils/providers/QueryProvider";
 import AuthProvider from "@/utils/providers/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { JotaiProvider } from "@/components/Jotai-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,10 +22,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} relative `}>
         <AuthProvider>
-          <QueryProvider>
-            {children}
-          <Toaster className="bg-white text-black  " />
-          </QueryProvider>
+          <JotaiProvider>
+            <QueryProvider>
+              {children}
+              <Toaster className="bg-white text-black  " />
+            </QueryProvider>
+          </JotaiProvider>
         </AuthProvider>
       </body>
     </html>

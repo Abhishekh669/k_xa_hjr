@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { doSocailLogin } from "@/lib/actions/auth/login";
-import { useCreateUser } from "@/utils/hooks/mutateHooks/useCreateUser";
+import { useCreateUser } from "@/utils/hooks/mutateHooks/user/useCreateUser";
 
 interface SignOutProps {
   setState: (state: SignInFlow) => void;

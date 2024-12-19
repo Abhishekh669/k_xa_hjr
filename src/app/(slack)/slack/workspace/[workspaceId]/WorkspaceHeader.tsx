@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,11 +6,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { WorkSpaceType } from "@/types/workspace";
 import { MemberType } from "@/types/member.type";
 import { ChevronDown, ListFilter, SquarePen } from "lucide-react";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
 import Hint from "@/components/Hint";
+import PreferencesModal from "./Preferences-Modal";
 
 function WorkspaceHeader({
   workspace,
@@ -19,7 +19,14 @@ function WorkspaceHeader({
   workspace: MemberType;
   isAdmin: boolean;
 }) {
+  const [preferencesOpen, setPreferencesOpen] = useState(false);
   return (
+    <>
+    <PreferencesModal
+      open={preferencesOpen} 
+      setOpen={setPreferencesOpen} 
+      initialValue={workspace?.workspaceId?.name}
+    />
     <div className="flex items-center justify-between px-4 h-[49px] gap-0.5">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -28,7 +35,7 @@ function WorkspaceHeader({
             className="font-semibold text-lg text-white  w-auto p-1.5 overflow-hidden hover:bg-white/30 hover:text-white rounded-[5px]"
           >
             <span className="truncate">{workspace?.workspaceId?.name}</span>
-            <ChevronDown className="size-4  shrink-0" />
+            <ChevronDown className="size-6 shrink-0" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -56,7 +63,7 @@ function WorkspaceHeader({
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer py-2 text-black  "
-                onClick={() => {}}
+                onClick={() => setPreferencesOpen(true)}
               >
                 Preferences
               </DropdownMenuItem>
@@ -85,6 +92,7 @@ function WorkspaceHeader({
         </Hint>
       </div>
     </div>
+    </>
   );
 }
 
