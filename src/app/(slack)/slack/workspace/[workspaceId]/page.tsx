@@ -1,5 +1,6 @@
 "use client"
 import { useCreateWorkspaceModal } from '@/features/workspaces/store/use-create-workspace-modal';
+import { getChannel } from '@/lib/actions/channels/channel';
 import { useGetLoggedInUser } from '@/utils/hooks/queryHooks/user/useGetLogedInUser';
 import { useGetWorkspaceDetails } from '@/utils/hooks/queryHooks/workspace/useGetWorkspaces';
 import { useWorkSpaceId } from '@/utils/hooks/workSpaceHook/use-workspace-id';
@@ -21,8 +22,11 @@ const WorkSpaceIdPage = () => {
     workspaceId 
   }
   const {data, isError, isLoading} = useGetWorkspaceDetails(userData);
-  console.log("this is the data : ",data)
   useEffect(() =>{
+    // const helloworld = async() =>{
+    //     const data = await getChannel(workspaceId as string);
+    // }
+    // helloworld();
     if(!!data && !isError && !isLoading){
       setOpen(false);
     }

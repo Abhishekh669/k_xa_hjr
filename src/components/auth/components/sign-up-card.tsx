@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/card";
 import { doSocailLogin } from "@/lib/actions/auth/login";
 import { useCreateUser } from "@/utils/hooks/mutateHooks/user/useCreateUser";
+import { toast } from "sonner";
 
 interface SignOutProps {
   setState: (state: SignInFlow) => void;
@@ -63,10 +64,12 @@ function SignUpCard({ setState }: SignOutProps) {
           if (response.status === 200 && response.message) {
             console.log("this is the response : ",response)
             setLoading(false);
+            toast.success("Email sent successfully")
             setMessage(response.message)
           }
           if (response.error) {
             setError(response.error as string);
+            toast.error(response.error)
             setLoading(false);
           }
         },

@@ -3,10 +3,10 @@
 import { userDataType } from "@/app/(slack)/slack/workspace/[workspaceId]/page";
 import { auth } from "@/auth";
 import { connectDB } from "@/lib/connectDB"
+import { Channel } from "@/model/channel.model";
 import { Member } from "@/model/members.model";
 import { WorkSpace } from "@/model/workspace.model";
 import { WorkSpaceType } from "@/types/workspace";
-import { workerData } from "worker_threads";
 
 connectDB();
 
@@ -60,6 +60,13 @@ export const createWorkSpace = async(data : WorkSpaceType) =>{
     })
 
     await newMember.save();
+
+    const newChannel = await new Channel({
+        name : "general",
+        workspaceId : savedWorkSpace._id
+    })
+
+    await newChannel.save();
     
     return {
         message : "Successfully created workspaces",
@@ -111,14 +118,11 @@ export const updateWorkSpace = async(data : any) =>{
 
 
 export const deleteWorkSpace = async(data : any) =>{
-    console.log("this is hte data in delete : ",data)
     const session = await auth();
     if(!session?.user) throw new Error("Unauthorized");
     const members = await Member.find({ workspaceId : data.workspaceId});
-    console.log("this is the members from the delete : ",members)
     if(members.length < 0) throw new Error("No any worksapces available")
     const isAdmin = members.some(member => member.userId == data.userId && member.role == "admin");
-console.log("This is hte admin check ", isAdmin)
     if(!isAdmin) throw new Error("Unauthorized")
     const deleteMember = await Member.deleteMany({workspaceId : data.workspaceId});
     const deleteWorkspace = await WorkSpace.findByIdAndDelete({_id : data.workspaceId})

@@ -27,7 +27,7 @@ export const CreateWorkspaceModal = ({user} : {user : User}) => {
   const router = useRouter();
 
 
-  const { data, mutate: server_create_workspace, } = useCreateWorkSpace();
+  const { data, mutate: server_create_workspace,isPending } = useCreateWorkSpace();
   const {data: workspaces, isError, isLoading} = useGetAllWorkSpaces(user?._id as string)
 
   const createWorkSpace = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -73,7 +73,7 @@ export const CreateWorkspaceModal = ({user} : {user : User}) => {
         <div>
         <form onSubmit={createWorkSpace} className="space-y-2">
             <Input   className="" placeholder="Add WorkSpace eg: Home" value={name} onChange={(e) => setName(e.target.value)}/>
-            <Button type="submit" className="bg-white hover:bg-white text-black">Create</Button>
+            <Button type="submit" className="bg-white hover:bg-white text-black"  disabled={isPending}>Create</Button>
         </form>
         </div>
       </DialogContent>
