@@ -9,25 +9,25 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import Logout from "@/components/users/Logout"
-import { useSession } from "next-auth/react"
+import { useGetLoggedInUser } from "@/utils/hooks/queryHooks/user/useGetLogedInUser"
 
 
 
 export const UserButton = () => {
-    const session = useSession();
+    const session = useGetLoggedInUser();
     return (
         <DropdownMenu
             modal={false}
         >
             <DropdownMenuTrigger className="outline-none relative">
-                <Avatar className="size-10 hover:opacity-75 transition bg-green-600">
-                    <AvatarImage alt="img" src={session?.data?.user.image}/>
-                    <AvatarFallback>
-                            {session?.data?.user?.name?.charAt(0).toUpperCase()}
+                <Avatar className="size-10 hover:opacity-75 transition text-white rounded-[5px] bg-blue-500">
+                    <AvatarImage alt="img" src={session?.data?.image}/>
+                    <AvatarFallback className="rounded-[5px]">
+                            {session?.data?.name?.charAt(0).toUpperCase()}
                     </AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="center" side='right' className="w-60">
+            <DropdownMenuContent align="center" side='right' className="w-60  text-black rounded-[5px]">
                 <DropdownMenuItem className="">
                     <Logout />
                 </DropdownMenuItem>

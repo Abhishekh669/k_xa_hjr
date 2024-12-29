@@ -52,10 +52,13 @@ const  useConfirm = (
                     <Button 
                         onClick={handleCancel}
                         variant={"outline"}
+                        className='rounded-[5px]'
                     >
                        Cancel 
                     </Button>
-                    <Button onClick={handleConfirm}>
+                    <Button onClick={handleConfirm}  
+                        className='bg-black text-white hover:bg-black rounded-[5px]'
+                    >
                         Confirm
                     </Button>
                 </DialogFooter>

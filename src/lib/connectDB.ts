@@ -1,5 +1,5 @@
+"use server"
 import mongoose from "mongoose";
-
 export async function connectDB() {
   try {
     mongoose.connect(process.env.MONGO_URI!);

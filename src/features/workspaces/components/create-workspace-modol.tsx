@@ -72,8 +72,8 @@ export const CreateWorkspaceModal = ({user} : {user : User}) => {
           {error && (<span className=" flex gap-x-4 text-[10px] text-red-600"><TriangleAlert className="text-red-600" /><span   >{error}</span></span>)}
         <div>
         <form onSubmit={createWorkSpace} className="space-y-2">
-            <Input   className="" placeholder="Add WorkSpace eg: Home" value={name} onChange={(e) => setName(e.target.value)}/>
-            <Button type="submit" className="bg-white hover:bg-white text-black"  disabled={isPending}>Create</Button>
+            <Input   className="" placeholder="Add WorkSpace eg: Home" value={name} onChange={(e) => setName(e.target.value)} disabled={isLoading}/>
+            <Button type="submit" className="bg-white hover:bg-white text-black"  disabled={isLoading}>Create</Button>
         </form>
         </div>
       </DialogContent>

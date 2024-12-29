@@ -88,7 +88,7 @@ export const getAllWorkSpaces = async(userId : string) =>{
     }
 }
 
-export const updateWorkSpace = async(data : any) =>{
+export const updateWorkSpace = async(data : {userId : string, workspaceId : string, newName: string}) =>{
     const session = await auth();
     if(!session?.user) throw new Error("Unauthorized");
     const members = await Member.findOne(
@@ -117,7 +117,9 @@ export const updateWorkSpace = async(data : any) =>{
 }
 
 
-export const deleteWorkSpace = async(data : any) =>{
+
+
+export const deleteWorkSpace = async(data : {userId : string, workspaceId : string }) =>{
     const session = await auth();
     if(!session?.user) throw new Error("Unauthorized");
     const members = await Member.find({ workspaceId : data.workspaceId});
@@ -125,11 +127,104 @@ export const deleteWorkSpace = async(data : any) =>{
     const isAdmin = members.some(member => member.userId == data.userId && member.role == "admin");
     if(!isAdmin) throw new Error("Unauthorized")
     const deleteMember = await Member.deleteMany({workspaceId : data.workspaceId});
+    const deleteChannel = await Channel.deleteMany({workspaceId : data.workspaceId})
     const deleteWorkspace = await WorkSpace.findByIdAndDelete({_id : data.workspaceId})
     if(!deleteWorkspace)return {error : "WorkSpace not found or could not be deleted"}
     return {
         message : "SuccessFully deleted ",
-        workspace : JSON.stringify(deleteWorkspace)
+        workspace : deleteWorkspace
     }
+
+}
+
+export const getWorkspaceMembers = async(workspaceId : string ) =>{
+    const session = await auth();
+    if(!session?.user) throw new Error("Unauthorized");
+    const members = await Member.find({workspaceId}).populate("userId");
+    console.log("this is the details of members of the workspaceID : ", members)
+    if(!members) return {error : "No members found"};
+    return { 
+        message : "SuccessFully Fetched Members",
+        members : JSON.stringify(members)
+    }
+}
+
+
+
+export const getNewJoinCode = async(workspaceId: string ) =>{
+    const session = await auth();
+    if(!session?.user) throw new Error("Unauthorized");
+    const member = await Member.findOne({
+        $and : [
+                { userId: session?.user?._id},
+                {workspaceId},
+        ]
+    })
+    if(!member || member.role !== "admin"){
+        throw new Error("Unauthorized")
+    }
+
+    const joinCode = generateCode();
+    const updatedWorkSpace = await WorkSpace.updateOne(
+        { _id: workspaceId },
+        { $set: { joinCode} } // Add a timestamp if needed
+    );
+
+    if(!updatedWorkSpace) return {error  : "Failed to create new code"}
+    return {message : "SuccessFully created the new code ", updatedWorkspace : updatedWorkSpace}
+
+
+}
+
+
+export const JoinWorkspace = async(data : {joinCode : string, workspaceId : string }) =>{
+    const session = await auth();
+    if(!session?.user) throw new Error("Unauthorized");
+    const workspace = await WorkSpace.findById({_id : data.workspaceId})
+    if(!workspace){
+        throw new Error("Workspace not found")
+    }
+    if(workspace.joinCode !== data.joinCode.toLocaleLowerCase() ){
+        throw new Error("Invalid Join Code")
+    }
+    const existingMember = await Member.findOne({
+        $and : [
+            {userId : session?.user?._id},
+            {workspaceId : data.workspaceId}
+        ]
+    })
+    if(existingMember){
+        throw new Error("Already an active member of this workspace")
+    }
+    const newMember = await new Member({
+        userId : session?.user?._id,
+        workspaceId : workspace._id,
+        role : "member"
+    })
+    const savedMember = await newMember.save();
+    if(!savedMember) return {error : "Failed to add user"}
+    return {message : "SuccessFully added User", member : JSON.stringify(savedMember)}
+}
+
+
+export const getInfoById = async(workspaceId : string) =>{
+    const session = await auth();
+    if(!session?.user) return null;
+    const member= await Member.findOne({
+        $and : [
+            {userId : session?.user?._id},
+            {workspaceId }
+        ]
+    })
+
+    const workspace = await WorkSpace.findOne({_id : workspaceId})
+    const data = { name : workspace?.name,
+        isMember : !!member
+    }
+    return {
+        message : "Found Something",
+        info : JSON.stringify(data)
+    }
+    
 
 }

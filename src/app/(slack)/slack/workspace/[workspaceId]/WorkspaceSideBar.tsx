@@ -16,8 +16,30 @@ import { SidebarItem } from "./SidebarItem";
 import { useGetChannels } from "@/utils/hooks/queryHooks/channel/useGetChannel";
 import { ChannelType } from "@/types/channel.type";
 import WorkspaceSection from "./WorkspaceSection";
+import { useGetWorkspaceMembers } from "@/utils/hooks/queryHooks/member/useGetWorkspaceMember";
+import { userDataType } from "./page";
+import { Date } from "mongoose";
+import UserItem from "./UserItem";
+import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
+
+interface UserType{
+  _id : string , 
+  name : string ,
+  email : string , 
+  image ?: string ,
+  authProvider : string ,
+  emailVerified : Date,
+}
+
+interface MembersType{
+  _id : string,
+  userId :UserType ,
+  workspaceId : string,
+  role : string 
+}
 
 function WorkspaceSideBar() {
+  const [_open, setOpen] = useCreateChannelModal()
   const workspaceId = useWorkSpaceId();
   const { data: user } = useGetLoggedInUser();
   const data = { userId: user?._id as string, workspaceId };
@@ -37,13 +59,15 @@ function WorkspaceSideBar() {
     isError: channelError,
   } = useGetChannels(workspaceId);
 
+  const {data : members, isLoading : membersLoading, isError: membersError} = useGetWorkspaceMembers(workspaceId);
+
   console.log(
-    "Member : ",
-    member,
+  
     "Workspace : ",
     workspace?.workspace,
     "Channels: ",
-    channels
+    channels?.channels,
+    "Members" ,members?.members
   );
   if (workspaceLoading || memberLoading) {
     return (
@@ -70,7 +94,8 @@ function WorkspaceSideBar() {
         <SidebarItem label="Threads" icon={MessageSquareText} id="threads" />
         <SidebarItem label="Drafts & Sent" icon={SendHorizonal} id="drafts" />
       </div>
-      <WorkspaceSection label="Channels" hint="New channel" onNew={() => {}}>
+      
+      <WorkspaceSection label="Channels" hint="New channel" onNew={member?.member.role=="admin" ? () => setOpen(true) : undefined}>
         {channels?.channels?.map((item: ChannelType) => (
           <SidebarItem
             key={item._id}
@@ -79,6 +104,18 @@ function WorkspaceSideBar() {
             id={item._id}
           />
         ))}
+      </WorkspaceSection>
+      <WorkspaceSection label="Direct Messages" hint="New Direct Messages" onNew={() => {}}>
+      {members?.members.map((item : MembersType)=>(
+        <div>
+          <UserItem 
+            key={item._id}
+            id={item._id}
+            label={item.userId.name}
+            image={item.userId.image}
+          />
+          </div>
+      ))}
       </WorkspaceSection>
     </div>
   );

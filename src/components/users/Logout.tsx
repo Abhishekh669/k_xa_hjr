@@ -5,7 +5,7 @@ import { LogOut } from 'lucide-react';
 
 function Logout() {
   return (
-      <Button className=' w-full flex gap-x-4 flex-start' onClick={() =>{
+      <Button  variant="ghost" className=' bg-white/80 rounded-[5px] hover:bg-white/90  w-full flex gap-x-4 flex-start' onClick={() =>{
         doLogout()
       }}>
         <LogOut />LogOut 

@@ -102,24 +102,18 @@ export const {
           ],
         });
         if (!checkUser) {
-          const newUser = {
+          const newUser = new User({
             name: session.user.name,
             email: session.user.email,
             image: session.user.image,
             authProvider: session.user.authProvider as string,
-            emailVerified : new Date()
-          };
-          const newDbUser = new User(newUser);
-          const savedUser = await newDbUser.save();
-          if (!savedUser) {
-            throw new Error("Failed to create user");
-          }
-          session.user._id = savedUser._id.toString()
-          return session;
+            emailVerified: new Date(),
+          });
+          checkUser = await newUser.save();
+          
         }
         session.user._id = checkUser._id.toString();
       return session;
-
     },
   },
   secret: process.env.AUTH_SECRET,

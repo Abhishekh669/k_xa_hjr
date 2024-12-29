@@ -1,13 +1,13 @@
 
-import { deleteWorkSpace } from "@/lib/actions/workspaces/workspaces";
+import {  JoinWorkspace } from "@/lib/actions/workspaces/workspaces";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-export const useDeleteWorkSpace = () => {
+export const useJoinWorkspace = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: deleteWorkSpace,
+    mutationFn: JoinWorkspace,
     
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getAllWorkSpaces'] })
+      queryClient.invalidateQueries({ queryKey: ['getWorkSpaceDetails'] })
     },
     onError: (error) => { 
     },

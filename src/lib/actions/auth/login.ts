@@ -1,11 +1,14 @@
 'use server'
 import { signIn,signOut } from "@/auth"
+import { connectDB } from "@/lib/connectDB";
 import { sendVerificationEmail } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/token";
 import { User } from "@/model/user.model";
 import { AuthError } from "next-auth";
 
 export const doCredentialLogin =    async(formData : FormData) =>{
+    await connectDB();
+    console.log("i am in cred loign")
     const existingUser = await User.findOne({
         $and: [
           { email: formData.get('email') },

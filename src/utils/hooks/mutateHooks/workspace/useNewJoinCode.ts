@@ -1,13 +1,13 @@
 
-import { deleteWorkSpace } from "@/lib/actions/workspaces/workspaces";
+import { getNewJoinCode } from "@/lib/actions/workspaces/workspaces";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-export const useDeleteWorkSpace = () => {
+import { toast } from "sonner";
+export const useNewJoinCode = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: deleteWorkSpace,
-    
+    mutationFn: getNewJoinCode,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getAllWorkSpaces'] })
+      queryClient.invalidateQueries({ queryKey: ['getWorkSpaceDetails'] })
     },
     onError: (error) => { 
     },

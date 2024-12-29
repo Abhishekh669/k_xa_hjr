@@ -51,7 +51,7 @@ function PreferencesModal({
   } = useDeleteWorkSpace();
   const handleDelete = async () => {
     const data = {
-      userId: userData?._id,
+      userId: userData?._id as string ,
       workspaceId,
     };
     const ok = await confirm();
@@ -61,7 +61,8 @@ function PreferencesModal({
       onSuccess: (res) => {
         if (res.message && res.workspace) {
           toast.success(res.message);
-          router.replace("/");
+          console.log("i am deleted")
+          router.push("/");
         } else if (res.error) {
           toast.error(res.error);
         }
@@ -75,14 +76,14 @@ function PreferencesModal({
     e.preventDefault();
 
     const data = {
-      userId: userData?._id,
+      userId: userData?._id as string ,
       workspaceId,
       newName: value,
     };
 
     
 
-    updateWorkSpace(data, {
+    updateWorkSpace(data , {
       onSuccess: (res) => {
         if (res.message && res.workspace) {
           toast.success(res.message);
@@ -96,6 +97,7 @@ function PreferencesModal({
       },
     });
   };
+  console.log("this is the data after deleteing : ",deleteData)
   return (
     <>
       <ConfirmDialog />

@@ -11,6 +11,7 @@ import { ChevronDown, ListFilter, SquarePen } from "lucide-react";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
 import Hint from "@/components/Hint";
 import PreferencesModal from "./Preferences-Modal";
+import InviteModal from "./InviteModal";
 
 function WorkspaceHeader({
   workspace,
@@ -20,8 +21,16 @@ function WorkspaceHeader({
   isAdmin: boolean;
 }) {
   const [preferencesOpen, setPreferencesOpen] = useState(false);
+  const [inviteOpen, setInviteOpen] = useState(false)
   return (
     <>
+    <InviteModal 
+      open={inviteOpen}
+      setOpen={setInviteOpen}
+      name={workspace?.workspaceId?.name}
+      joinCode={workspace?.workspaceId?.joinCode}
+
+    />
     <PreferencesModal
       open={preferencesOpen} 
       setOpen={setPreferencesOpen} 
@@ -57,7 +66,7 @@ function WorkspaceHeader({
               <DropdownMenuSeparator className="text-black h-1" />
               <DropdownMenuItem
                 className="cursor-pointer py-2 text-black  "
-                onClick={() => {}}
+                onClick={() => setInviteOpen(true)}
               >
                 Invite poeple to {workspace.workspaceId.name}
               </DropdownMenuItem>
