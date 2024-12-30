@@ -15,8 +15,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 
-function NewVerificationForm({token} : {token : string}) {
- 
+function NewVerificationForm() {
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [message, setMessage] = useState("");
