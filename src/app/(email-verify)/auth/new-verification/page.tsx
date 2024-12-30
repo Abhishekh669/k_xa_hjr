@@ -1,17 +1,22 @@
-"use client"
-import React, { Suspense } from 'react'
-import {NewVerificationForm} from '@/components/auth/components/NewVerificationForm'
-import { useSearchParams } from 'next/navigation';
+"use client";
 
-function page() {
-   const searchParams = useSearchParams();
-    const token = searchParams.get("token");
+import React, { Suspense } from "react";
+import { NewVerificationForm } from "@/components/auth/components/NewVerificationForm";
+import { useSearchParams } from "next/navigation";
+
+function Page() {
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+
   return (
-    <div className='w-full h-full'>
-       <Suspense fallback={<div>Loading...</div>}></Suspense>
-      <NewVerificationForm  token={token as string}/>
+    <div className="w-full h-full">
+      {/* Wrap the component inside Suspense */}
+      <Suspense fallback={<div>Loading...</div>}>
+        {/* Pass token to NewVerificationForm */}
+        <NewVerificationForm token={token as string} />
+      </Suspense>
     </div>
-  )
+  );
 }
 
-export default page;
+export default Page;
