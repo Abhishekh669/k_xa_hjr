@@ -18,7 +18,7 @@ export const newVerification = async(token : string)=>{
     if(!existingUser){
         return {error : "Email does not exist"}
     }
-   const updateUser =  await User.findByIdAndUpdate(
+   await User.findByIdAndUpdate(
         {_id : existingUser._id}, {emailVerified : new Date(), email : existingUser.email},{new : true}
     )
 

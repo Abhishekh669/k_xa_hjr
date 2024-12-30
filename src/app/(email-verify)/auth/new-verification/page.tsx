@@ -1,12 +1,16 @@
-import NewVerificationForm from '@/components/auth/components/NewVerificationForm'
+"use client"
 import React from 'react'
+import {NewVerificationForm} from '@/components/auth/components/NewVerificationForm'
+import { useSearchParams } from 'next/navigation';
 
-function NewVerificationPage() {
+function page() {
+   const searchParams = useSearchParams();
+    const token = searchParams.get("token");
   return (
     <div className='w-full h-full'>
-      <NewVerificationForm />
+      <NewVerificationForm  token={token as string}/>
     </div>
   )
 }
 
-export default NewVerificationPage
+export default page;
