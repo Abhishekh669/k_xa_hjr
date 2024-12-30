@@ -5,6 +5,7 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+ 
   // Add any additional configuration you need here
 // Optional: Only if you want to disable SSR entirely
   // You can add other settings here as well, such as:

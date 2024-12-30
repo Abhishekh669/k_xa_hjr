@@ -9,7 +9,7 @@ import {
   MessageSquareText,
   SendHorizonal,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import WorkspaceHeader from "./WorkspaceHeader";
 import { MemberType } from "@/types/member.type";
 import { SidebarItem } from "./SidebarItem";
@@ -20,6 +20,8 @@ import { useGetWorkspaceMembers } from "@/utils/hooks/queryHooks/member/useGetWo
 import { Date } from "mongoose";
 import UserItem from "./UserItem";
 import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
+import { useChannelId } from "@/utils/hooks/channelHook/use-channel-id";
+import { useGetIndiviudalChannel } from "@/utils/hooks/queryHooks/channel/useGetIndividualChannel";
 
 interface UserType{
   _id : string , 
@@ -39,6 +41,7 @@ interface MembersType{
 
 function WorkspaceSideBar() {
   const [_open, setOpen] = useCreateChannelModal()
+  const channelId = useChannelId();
   const workspaceId = useWorkSpaceId();
   const { data: user } = useGetLoggedInUser();
   const data = { userId: user?._id as string, workspaceId };
@@ -54,9 +57,13 @@ function WorkspaceSideBar() {
     data: channels,
   } = useGetChannels(workspaceId);
 
+  // const {data: channelData} = useGetIndiviudalChannel(channelId)
+
   const {data : members} = useGetWorkspaceMembers(workspaceId);
-
-
+  // const channelId = useMemo(()=> channels?.channels[0]?._id ,[channels?.channels]);
+  // useEffect(()=>{
+  //     if(channel)
+  // },[])
   if (workspaceLoading || memberLoading) {
     return (
       <div className="flex flex-col bg-[#5E2C5F] h-full items-center justify-center ">
@@ -79,21 +86,24 @@ function WorkspaceSideBar() {
         isAdmin={workspace.workspace.role == "admin"}
       />
       <div className="flex flex-col px-2 mt-3">
-        <SidebarItem label="Threads" icon={MessageSquareText} id="threads" />
-        <SidebarItem label="Drafts & Sent" icon={SendHorizonal} id="drafts" />
+        <SidebarItem key={"threads"} label="Threads" icon={MessageSquareText} id="threads" />
+        <SidebarItem  key={"drafts"} label="Drafts & Sent" icon={SendHorizonal} id="drafts" />
       </div>
       
-      <WorkspaceSection label="Channels" hint="New channel" onNew={member?.member.role=="admin" ? () => setOpen(true) : undefined}>
+      <WorkspaceSection key={"channels"} label="Channels" hint="New channel" onNew={member?.member.role=="admin" ? () => setOpen(true) : undefined}>
         {channels?.channels?.map((item: ChannelType) => (
-          <SidebarItem
+          <div>
+            <SidebarItem
             key={item._id}
             icon={HashIcon}
             label={item.name}
             id={item._id}
+            variant={channelId === item._id ? "active" : "default"}
           />
+          </div>
         ))}
       </WorkspaceSection>
-      <WorkspaceSection label="Direct Messages" hint="New Direct Messages" onNew={() => {}}>
+      <WorkspaceSection  key={"direct_messages"} label="Direct Messages" hint="New Direct Messages" onNew={() => {}}>
       {members?.members.map((item : MembersType)=>(
         <div>
           <UserItem 

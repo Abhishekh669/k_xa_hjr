@@ -8,9 +8,7 @@ function Page() {
 
   return (
     <div className="w-full h-full">
-      {/* Wrap the component inside Suspense */}
       <Suspense fallback={<div>Loading...</div>}>
-        {/* Pass token to NewVerificationForm */}
         <NewVerificationForm  />
       </Suspense>
     </div>

@@ -2,12 +2,9 @@ import React, { useState } from 'react'
 
 import {
     Dialog,
-    DialogClose,
     DialogContent,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
   } from "@/components/ui/dialog";
 
 import { useCreateChannelModal } from '../store/use-create-channel-modal';
@@ -16,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { useCreateChannel } from '@/utils/hooks/mutateHooks/channels/useCreateChannel';
 import { useWorkSpaceId } from '@/utils/hooks/workSpaceHook/use-workspace-id';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 
 function CreateChannelModal() {
@@ -23,6 +21,7 @@ function CreateChannelModal() {
     const [name, setName] = useState("")
     const {mutate : server_createChannel, isPending} = useCreateChannel();
     const workspaceId  = useWorkSpaceId();
+    const router = useRouter()
     
     const handleClose = () =>{
         setName("")
@@ -42,9 +41,10 @@ function CreateChannelModal() {
                 onSuccess : (res) =>{
                     //todo  redirect to new channel
                     if(res.message && res.channel){
+                        const data = JSON.parse(res.channel)
                         toast.success("SuccessFully created new Channel")
+                        router.push(`/slack/workspace/${workspaceId}/channel/${data._id}`)
                         handleClose();
-
                     }else{
                         toast.error("Failed to create a channel")
                     }

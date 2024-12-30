@@ -7,6 +7,7 @@ export const useUpdateWorkSpace = () => {
     mutationFn: updateWorkSpace,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getWorkSpaceDetails'] })
+      queryClient.invalidateQueries({ queryKey: ['getAllWorkSpaces'] })
     },
     onError: (error) => { 
     },

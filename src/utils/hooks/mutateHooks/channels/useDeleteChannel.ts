@@ -1,14 +1,14 @@
 
-import { createChannel } from "@/lib/actions/channels/channel";
+import {  deleteChannel } from "@/lib/actions/channels/channel";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-export const useCreateChannel = () => {
+export const useDeleteChannel = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: createChannel,
+    mutationFn: deleteChannel,
     
     onSuccess: () => {
+      
       queryClient.invalidateQueries({ queryKey: ['getChannels'] })
-      queryClient.invalidateQueries({ queryKey: ['getIndividualChannel'] })
     },
     onError: () => { },
     onSettled: () => { },
