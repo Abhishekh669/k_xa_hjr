@@ -40,12 +40,12 @@ function PreferencesModal({
   const workspaceId = useWorkSpaceId();
   const { data: userData } = useGetLoggedInUser();
   const {
-    data: updatedData,
+   
     mutate: updateWorkSpace,
     isPending: updatePending,
   } = useUpdateWorkSpace();
   const {
-    data: deletedData,
+   
     mutate: deleteData,
     isPending: deletePending,
   } = useDeleteWorkSpace();
@@ -61,7 +61,6 @@ function PreferencesModal({
       onSuccess: (res) => {
         if (res.message && res.workspace) {
           toast.success(res.message);
-          console.log("i am deleted")
           router.push("/");
         } else if (res.error) {
           toast.error(res.error);
@@ -97,7 +96,6 @@ function PreferencesModal({
       },
     });
   };
-  console.log("this is the data after deleteing : ",deleteData)
   return (
     <>
       <ConfirmDialog />

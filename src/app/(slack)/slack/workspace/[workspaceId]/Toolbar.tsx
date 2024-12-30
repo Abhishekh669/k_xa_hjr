@@ -1,21 +1,10 @@
 import { Button } from '@/components/ui/button'
 import { useGetLoggedInUser } from '@/utils/hooks/queryHooks/user/useGetLogedInUser'
-import { useGetAllWorkSpaces } from '@/utils/hooks/queryHooks/workspace/useGetAllWorkSpaces'
 import { Info, Search } from 'lucide-react'
 import React from 'react'
-import { userDataType } from './page'
-import { useWorkSpaceId } from '@/utils/hooks/workSpaceHook/use-workspace-id'
-import { useGetWorkspaceDetails } from '@/utils/hooks/queryHooks/workspace/useGetWorkspaces'
-import WorkSpace from '../page'
 
 function Toolbar() {
-    const {data, isError, isLoading} = useGetLoggedInUser();
-    const workspaceId = useWorkSpaceId();
-    const userData:userDataType = {
-        userId : data?._id as string,
-        workspaceId
-      }
-      const {data: workspace, isError : workspaceError, isLoading: workspaceIsLoading} = useGetWorkspaceDetails(userData);
+    const {data} = useGetLoggedInUser();
 
   return (
     <nav className='bg-[#481349] flex items-center justify-between h-10 p-1.5 '>
@@ -24,7 +13,7 @@ function Toolbar() {
                 <Button size="sm" className="bg-accent-25 bg-[rgb(109,22,110)] hover:bg-[rgb(164,34,167)] w-full jusitfy-start  px-2 rounded-sm">
                 <Search  className='size-4 text-white mr-2'/>
                 <span className="text-white text-xs">
-                    Search {data?.name}'s workspace
+                    Search {data?.name}&apos;s workspace
                 </span>
             </Button>
         </div>

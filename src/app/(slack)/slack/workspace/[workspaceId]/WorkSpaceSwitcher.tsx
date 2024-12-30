@@ -12,7 +12,7 @@ import { useGetLoggedInUser } from "@/utils/hooks/queryHooks/user/useGetLogedInU
 import { useGetAllWorkSpaces } from "@/utils/hooks/queryHooks/workspace/useGetAllWorkSpaces";
 import { useGetWorkspaceDetails } from "@/utils/hooks/queryHooks/workspace/useGetWorkspaces";
 import { useWorkSpaceId } from "@/utils/hooks/workSpaceHook/use-workspace-id";
-import { AlertCircle, Loader, Plus } from "lucide-react";
+import { Loader, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -21,7 +21,7 @@ function WorkSpaceSwitcher() {
   const router = useRouter();
   const [_open, setOpen] = useCreateWorkspaceModal();
   const { data: user } = useGetLoggedInUser();
-  const { data: workspaces, isLoading: workspacesLoading }=useGetAllWorkSpaces(user?._id as string);
+  const { data: workspaces}=useGetAllWorkSpaces(user?._id as string);
   const { data: workspace, isLoading: workspaceLoading }=useGetWorkspaceDetails({ userId: user?._id as string, workspaceId });
   const filterWorkspaces = workspaces?.workspaces?.filter(
     (workspace: WorkSpaceType) => workspace._id !== workspaceId

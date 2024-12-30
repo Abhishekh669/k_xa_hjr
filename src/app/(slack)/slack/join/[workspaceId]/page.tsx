@@ -30,7 +30,6 @@ export default function JoinPage() {
       onSuccess : (res) =>{
         if(res.message && res.member){
           const workspaceDetails = JSON.parse(res.member)
-          console.log("this is response message : ",workspaceDetails)
           router.push(`/slack/workspace/${workspaceDetails.workspaceId}`)
           toast.success("Workspaces joined ")
         }else{

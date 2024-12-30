@@ -25,7 +25,6 @@ export const getWorkspaceDetails = async(data : userDataType) =>{
     const session = await auth();
     if(!session?.user) throw new Error("Unauthorized")
     const getWorkSpace = await Member.findOne({userId : data.userId , workspaceId : data.workspaceId}).populate("workspaceId")
-console.log("workspace : ",getWorkSpace)
     if(!getWorkSpace) return {
         error : "WorkSpace not found"
     };
@@ -47,7 +46,6 @@ export const createWorkSpace = async(data : WorkSpaceType) =>{
     })
     if(checkWorkSpace) return {error : "WorkSpace Already Exists"}
     const newData = {...data, joinCode: generateCode()}
-    console.log("this is the new data : ", newData)
     const newWorkSpace = await new WorkSpace(newData);
     const savedWorkSpace = await newWorkSpace.save();
     if(!savedWorkSpace){
@@ -141,7 +139,6 @@ export const getWorkspaceMembers = async(workspaceId : string ) =>{
     const session = await auth();
     if(!session?.user) throw new Error("Unauthorized");
     const members = await Member.find({workspaceId}).populate("userId");
-    console.log("this is the details of members of the workspaceID : ", members)
     if(!members) return {error : "No members found"};
     return { 
         message : "SuccessFully Fetched Members",

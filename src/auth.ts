@@ -73,12 +73,12 @@ export const {
     }),
   ],
   callbacks: {
-    async signIn({user, account}){
-      if(account?.provider !== "credentials") return true;
-      const  existingUser = await User.findOne({_id : user._id});
-      if(!existingUser?.emailVerified) return false;
-      return true 
-    },
+    // async signIn({user, account}){
+    //   if(account?.provider !== "credentials") return true;
+    //   const  existingUser = await User.findOne({_id : user._id});
+    //   if(!existingUser?.emailVerified) return false;
+    //   return true 
+    // },
     async jwt({ token, user, account }) {
       if (user) {
         token._id = user._id?.toString();
@@ -89,32 +89,36 @@ export const {
       return token;
     },
     async session({ session, token }) {
-        if(!token) throw new Error("Something went wrong")
-        session.user._id = token._id as string;
-        session.user.email = token.email as string;
-        session.user.name = token.name as string;
-        session.user.authProvider = token.authProvider as string;
-        await connectDB();
-        let checkUser = await User.findOne({
-          $and: [
-            { email: session.user.email },
-            { authProvider: session.user.authProvider },
-          ],
+      if (!token) throw new Error("Something went wrong");
+      
+      // Enrich session with token information
+      session.user._id = token._id as string;
+      session.user.email = token.email as string;
+      session.user.name = token.name as string;
+      session.user.authProvider = token.authProvider as string;
+    
+      // Ensure the user exists in the database
+      console.log("this is session : ",session.user?.authProvider)
+      await connectDB();
+      let existingUser = await User.findOne({
+        email: session.user.email,
+        authProvider: session.user.authProvider,
+      });
+    
+      // Create user only if they don't exist
+      if (!existingUser) {
+        existingUser = await User.create({
+          name: session.user.name,
+          email: session.user.email,
+          image: session.user.image,
+          authProvider: session.user.authProvider,
+          emailVerified: new Date(), // Assuming OAuth verified email
         });
-        if (!checkUser) {
-          const newUser = new User({
-            name: session.user.name,
-            email: session.user.email,
-            image: session.user.image,
-            authProvider: session.user.authProvider as string,
-            emailVerified: new Date(),
-          });
-          checkUser = await newUser.save();
-          
-        }
-        session.user._id = checkUser._id.toString();
+      }
+    
+      session.user._id = existingUser._id.toString();
       return session;
-    },
+    }
   },
   secret: process.env.AUTH_SECRET,
 });

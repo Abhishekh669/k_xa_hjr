@@ -38,7 +38,11 @@ export const createChannel = async(data : {name : string , workspaceId : string}
     const session = await auth();
     if(!session?.user) throw new Error("Unauthorized")
     const member = await Member.findOne({workspaceId : data.workspaceId});
-    if(!member || member.role !== "admin") throw new Error("Unauthorized")
+    console.log("this is hte member : ",member)
+    if(!member || member.role !== "admin") {
+        console.log("i am error")
+        throw new Error("Unauthorized")
+    }
     const parsedName = data.name.replace(/\s+/g,"-").toLowerCase();
     const newChanelData = {
         ...data,

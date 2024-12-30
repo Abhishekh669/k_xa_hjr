@@ -7,7 +7,7 @@ export default function RootLayout({
 }>) {
   return (
         <div>
-            <CreateWorkspaceModal />
+            {/* <CreateWorkspaceModal /> */}
             {children}
         </div>
   );

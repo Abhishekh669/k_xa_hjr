@@ -14,7 +14,6 @@ export const currentMember = async(data  : memberType) =>{
     const member = await Member.findOne({
         userId : data.userId, workspaceId : data.workspaceId
     }).populate("userId").populate("workspaceId")
-    console.log("this is hte members : ",member)
     if(!member) return {error : "No any members"}
     return {
         message : "SuccessFully got current member",

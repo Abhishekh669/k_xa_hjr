@@ -34,7 +34,6 @@ function SignInCard({ setState }: SignInCardProps) {
     try {
       const formData = new FormData(e.currentTarget);
       const response = await doCredentialLogin(formData);
-      console.log("this is the repsone in the login : ",response)
       
       if(!!response.error){
         setError(response.error)
@@ -47,7 +46,6 @@ function SignInCard({ setState }: SignInCardProps) {
         router.push("/slack")
       }
     } catch (error : any) {
-      console.log("this is the error : ",error.Error)
       setError(error.Error || "Something went wrong.")
     }
   }

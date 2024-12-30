@@ -8,14 +8,12 @@ import { AuthError } from "next-auth";
 
 export const doCredentialLogin =    async(formData : FormData) =>{
     await connectDB();
-    console.log("i am in cred loign")
     const existingUser = await User.findOne({
         $and: [
           { email: formData.get('email') },
           { authProvider: "credentials" },
         ],
       }).select("+password");
-      console.log("this is the existingUser : ", existingUser)
     if(!existingUser || !existingUser.email || !existingUser.password){
         return {error : "Email doesnot exist!"}
     }
@@ -54,14 +52,12 @@ export const doCredentialLogin =    async(formData : FormData) =>{
 export const doSocailLogin = async(formData : FormData) =>{
     const action  = formData.get('action') as string;
     await signIn(action,{redirectTo : "/slack"})
-    console.log("this is the action : ", action)
 
 }
 
 
 
 export const doLogout = async() =>{
-    console.log("this is logout")
 
     await signOut({
         redirectTo : "/"

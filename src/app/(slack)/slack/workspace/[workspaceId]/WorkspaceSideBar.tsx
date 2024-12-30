@@ -17,7 +17,6 @@ import { useGetChannels } from "@/utils/hooks/queryHooks/channel/useGetChannel";
 import { ChannelType } from "@/types/channel.type";
 import WorkspaceSection from "./WorkspaceSection";
 import { useGetWorkspaceMembers } from "@/utils/hooks/queryHooks/member/useGetWorkspaceMember";
-import { userDataType } from "./page";
 import { Date } from "mongoose";
 import UserItem from "./UserItem";
 import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
@@ -46,29 +45,18 @@ function WorkspaceSideBar() {
   const {
     data: member,
     isLoading: memberLoading,
-    isError: memberError,
   } = useGetCurrentMember(data);
   const {
     data: workspace,
     isLoading: workspaceLoading,
-    isError: workspaceError,
   } = useGetWorkspaceDetails(data);
   const {
     data: channels,
-    isLoading: channelLoading,
-    isError: channelError,
   } = useGetChannels(workspaceId);
 
-  const {data : members, isLoading : membersLoading, isError: membersError} = useGetWorkspaceMembers(workspaceId);
+  const {data : members} = useGetWorkspaceMembers(workspaceId);
 
-  console.log(
-  
-    "Workspace : ",
-    workspace?.workspace,
-    "Channels: ",
-    channels?.channels,
-    "Members" ,members?.members
-  );
+
   if (workspaceLoading || memberLoading) {
     return (
       <div className="flex flex-col bg-[#5E2C5F] h-full items-center justify-center ">

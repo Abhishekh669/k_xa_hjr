@@ -62,7 +62,6 @@ function SignUpCard({ setState }: SignOutProps) {
       server_createUser(data, {
         onSuccess: (response) => {
           if (response.status === 200 && response.message) {
-            console.log("this is the response : ",response)
             setLoading(false);
             toast.success("Email sent successfully")
             setMessage(response.message)
@@ -79,7 +78,6 @@ function SignUpCard({ setState }: SignOutProps) {
         },
       });
     } catch (error) {
-      console.error("Error:", error);
       setError("Something went wrong");
       setLoading(false);
     }
