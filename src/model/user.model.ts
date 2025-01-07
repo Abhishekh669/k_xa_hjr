@@ -39,6 +39,8 @@ const userSchema = new Schema<IUser>({
     type: Date,
     default: null, // Default to null if the email is not verified
   },
+},{
+  timestamps: true, // Adds `createdAt` and `updatedAt`
 });
 
 userSchema.index({ email: 1, authProvider: 1 }, { unique: true });

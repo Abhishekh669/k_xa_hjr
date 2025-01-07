@@ -24,6 +24,7 @@ html, body,
 
 .ql-container{
   font-family:  "Lato", sans-serif !important;
+ 
   border : none !important;
   height:  unset !important;
 
@@ -33,7 +34,7 @@ html, body,
 .ql-editor { 
   line-height : 22px !important;
   padding : 8px 12px !important;
-  color : #1c1c1d !important;
+  color : black !important;
   font-weight: 400 !important;
   font-family: "Lato", sans-serif !important;
   font-size: 14px !important;
@@ -60,6 +61,12 @@ html, body,
   font-style: normal !important;
   font-weight: 400 !important;
   @apply truncate;
+}
+
+
+.messages-scrollbar{
+  scrollbar-width: thin;
+  scrollbar-color: #dcdcdc #f8f8f8;
 }
 
 

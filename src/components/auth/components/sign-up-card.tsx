@@ -99,7 +99,7 @@ function SignUpCard({ setState }: SignOutProps) {
             name="name"
             disabled={loading}
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => setName((e.target.value).trim())}
             placeholder="Name"
             type="text"
             required
@@ -108,7 +108,7 @@ function SignUpCard({ setState }: SignOutProps) {
             name="email"
             disabled={loading}
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail((e.target.value).trim())}
             placeholder="Email"
             type="email"
             required

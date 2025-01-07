@@ -18,6 +18,8 @@ const workSpace = new Schema<IWorkSpace>({
     joinCode : {
         type : String, required : true
     }
+},{
+    timestamps: true, // Adds `createdAt` and `updatedAt`
 })
 
 export const WorkSpace =  mongoose.models.WorkSpace || mongoose.model("WorkSpace", workSpace);

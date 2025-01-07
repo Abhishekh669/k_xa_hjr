@@ -11,6 +11,9 @@ const channelSchema = new Schema({
             required: true,
     },
     
+    
+},{
+    timestamps: true, // Adds `createdAt` and `updatedAt`
 })
 
 channelSchema.index({ workspaceId: 1 }, { name: "by_workspace_id" }); 

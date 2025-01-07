@@ -16,6 +16,8 @@ const memberSchema = new Schema({
         required: true,
       },
     
+},{
+  timestamps: true, // Adds `createdAt` and `updatedAt`
 })
 
 memberSchema.index({ userId: 1 }, { name: "by_user_id" }); 

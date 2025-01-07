@@ -4,8 +4,6 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import Logout from "@/components/users/Logout"
@@ -22,7 +20,7 @@ export const UserButton = () => {
             <DropdownMenuTrigger className="outline-none relative">
                 <Avatar className="size-10 hover:opacity-75 transition text-white rounded-[5px] bg-blue-500">
                     <AvatarImage alt="img" src={session?.data?.image}/>
-                    <AvatarFallback className="rounded-[5px]">
+                    <AvatarFallback className="rounded-[5px] text-white">
                             {session?.data?.name?.charAt(0).toUpperCase()}
                     </AvatarFallback>
                 </Avatar>

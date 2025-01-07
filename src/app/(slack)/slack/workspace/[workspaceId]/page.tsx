@@ -28,12 +28,14 @@ const WorkSpaceIdPage = () => {
   };
 
   const { data: workspace, isLoading: workspaceLoading, isError: workspaceError } = useGetWorkspaceDetails(userData);
-  const { data: channels, isLoading: channelsLoading } = useGetChannels(workspaceId);
   const { data: member, isLoading: memberLoading } = useGetCurrentMember(userData);
+  const { data: channels, isLoading: channelsLoading } = useGetChannels(workspaceId);
 
   const channelId = useMemo(() => channels?.channels[0]?._id, [channels?.channels]);
   const giveWorkspaceId = useMemo(() => workspace?.workspace?._id, [workspace?.workspace]);
   const isAdmin = useMemo(() => member?.member?.role === "admin", [member?.member?.role]);
+
+  console.log("this is channel : ",channels)
 
   // Handle redirects and modals based on conditions
   useEffect(() => {
@@ -89,6 +91,7 @@ const WorkSpaceIdPage = () => {
   }
 
   // When no channels are available, display the message
+ if(!!channelId ){
   return (
     <div className="min-h-screen flex flex-1 items-center justify-center flex-col gap-2">
       <TriangleAlert className="size-6 text-muted-foreground" />
@@ -97,6 +100,7 @@ const WorkSpaceIdPage = () => {
       </span>
     </div>
   );
+ }
 };
 
 export default WorkSpaceIdPage;
